@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Reddit Embed Fix | redditfx.com</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+    <meta content="#FF4500" data-react-helmet="true" name="theme-color" />
+
+    <!--<meta name="twitter:card" content="player" />
+    <meta name="twitter:player" content="<%= data.vidUrl %>" />
+    <meta name="twitter:description" content="<%= data.title %>" />
+    <meta name="twitter:player:width" content="720" />
+    <meta name="twitter:player:height" content="480" />
+    <meta name="twitter:player:stream" content="<%= data.vidUrl %>" />
+    <meta name="twitter:player:stream:content_type" content="video/mp4" />-->
+
+    <meta property="og:type" content="video.movie">
+    <meta property="og:site_name" content="Reddit Embed Fix | redditfx.com">
+    <meta property="og:url" content="<%= data.postUrl %>" />
+    <meta property="og:video" content="<%= data.vidUrl %>" />
+    <meta property="og:video:secure_url" content="<%= data.vidUrl %>" />
+    <meta property="og:video:type" content="video/mp4" />
+    <meta property="og:video:width" content="1280" />
+    <meta property="og:video:height" content="720" />
+    <meta property="og:title" content="<%= data.sub %> - <%= data.title %>" />
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css"
+        integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk" crossorigin="anonymous">
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+
+        .button {
+            margin: 10px;
+            padding: 15px 45px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 18px;
+            transition: 0.5s;
+            background-size: 200% auto;
+            color: white;
+            border-radius: 6px;
+            border-style: solid;
+            border-width: 1px;
+            display: block;
+            box-shadow: 1px 1px 6px #131313;
+        }
+
+        .button:hover {
+            background-position: right center;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        #redditBtn {
+            background-image: linear-gradient(90deg, rgba(255, 69, 0, 1) 0%, rgba(255, 160, 0, 1) 100%);
+            border-color: #ff823e;
+        }
+
+        #miscBtn {
+            background-image: linear-gradient(90deg, rgba(50, 50, 50, 1) 0%, rgba(77, 77, 77, 1) 100%);
+            border-color: #4a4a4a;
+            color: #aaaaaa;
+        }
+
+        body {
+            display: flex;
+            height: 100vh;
+            margin: 0;
+            justify-content: center;
+            align-items: center;
+            background-color: #222222;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .centered {
+            display: flex;
+            flex-direction: column;
+        }
+
+        i {
+            margin-right: 15px;
+            font-size: 24px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="centered">
+        <a href="<%= data.postUrl %>" class="button" id="redditBtn"><i class="fab fa-reddit-alien"></i>Original Reddit
+            post</a>
+        <a href="<%= data.vidUrl %>" class="button" id="miscBtn"><i class="far fa-file-video"></i>Direct link to
+            video</a>
+        <a href="https://github.com/Cosmiiko/RedditEmbedFix" class="button" id="miscBtn"><i
+                class="fab fa-github"></i>RedditFx's Github repo</a>
+    </div>
+</body>
+
+</html>

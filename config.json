@@ -1,0 +1,8 @@
+{
+    "subUrl": "",
+    "debug": true,
+    "encodingPreset": "veryfast",
+    "cacheDuration": 604800000,
+    "redirectUnknownAgents": true,
+    "httpPort": 80
+}
