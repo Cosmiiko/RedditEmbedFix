@@ -117,7 +117,7 @@ function serveContent(id, req, res) {
             data.sub = content.subreddit_name_prefixed;
             data.title = content.title;
             data.author = content.author;
-            data.postUrl = 'https://www.reddit.com/' + req.url;
+            data.postUrl = 'https://www.reddit.com' + req.url;
 
             // Not optimal, I'd guess videos still being processed by reddit might have 'self' too
             if (content.thumbnail == null || content.thumbnail == 'self') {
