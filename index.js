@@ -11,7 +11,7 @@ const DISCORD_AGENTS = [
     'Mozilla/5.0 (compatible; Discordbot/2.0; +https://discordapp.com)'
 ];
 const CACHE_PATH = path.join(__dirname, 'cache');
-const POSTID_REGEX = /(?:comments|^)\/([0-9a-z][0-9a-z][0-9a-z][0-9a-z][0-9a-z][0-9a-z])(?:\/|$)/;
+const BASE36_REGEX = /^[0-9a-z][0-9a-z][0-9a-z][0-9a-z][0-9a-z][0-9a-z]$/;
 
 const config = require('./config.json');
 const app = express();
@@ -57,8 +57,17 @@ app.get('/', (req, res) => {
     res.render('home');
 });
 
-// Bad practice to have a '*' route but whatever
-app.get('*', (req, res) => {
+// Permalink format
+app.get('/r/:sub/comments/:id/:title?', (req, res) => {
+    serveVideo(req.params['id'], req, res);
+});
+
+// Shortlink format
+app.get('/:id', (req, res) => {
+    serveVideo(req.params['id'], req, res);
+});
+
+function serveVideo(id, req, res) {
     if (console.debug)
         console.log('request from:', req.headers['user-agent']);
 
@@ -72,8 +81,9 @@ app.get('*', (req, res) => {
 
     let postId = 't3_';
 
-    if (POSTID_REGEX.test(req.url)) {
-        postId += POSTID_REGEX.exec(req.url)[1];
+    // Avoid useless API request if postId is invalid anyway
+    if (BASE36_REGEX.test(id)) {
+        postId += id;
     }
     else {
         res.render('error', { error: 'Could not parse link.' });
@@ -145,7 +155,7 @@ app.get('*', (req, res) => {
             res.render('response', { data: data })
         });
     });
-});
+};
 
 app.listen(config.httpPort, () => {
     console.log('web server listening on port:', config.httpPort);
