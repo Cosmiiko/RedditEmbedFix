@@ -51,6 +51,7 @@ setInterval(cleanCache, 1000 * 60 * 60 * 24);
 cleanCache();
 
 app.set('view engine', 'ejs');
+app.use('/public', express.static('public'));
 app.use('/cache', express.static('cache'));
 
 app.get('/', (req, res) => {
