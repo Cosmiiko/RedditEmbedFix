@@ -94,3 +94,7 @@ span.code {
     border-color: #79ff57;
     box-shadow: 1px 1px 6px #131313;
 }
+
+.preload {
+    transition: width 0s !important;
+}
