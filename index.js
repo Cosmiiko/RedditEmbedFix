@@ -60,15 +60,15 @@ app.get('/', (req, res) => {
 
 // Permalink format
 app.get('/r/:sub/comments/:id/:title?', (req, res) => {
-    serveVideo(req.params['id'], req, res);
+    serveContent(req.params['id'], req, res);
 });
 
 // Shortlink format
 app.get('/:id', (req, res) => {
-    serveVideo(req.params['id'], req, res);
+    serveContent(req.params['id'], req, res);
 });
 
-function serveVideo(id, req, res) {
+function serveContent(id, req, res) {
     if (console.debug)
         console.log('request from:', req.headers['user-agent']);
 
@@ -100,8 +100,6 @@ function serveVideo(id, req, res) {
 
     // Post hasn't been cached yet, querying Reddit
     request('https://reddit.com/by_id/' + postId + '.json', function (_, redditRes, jsonBody) {
-        console.log('https://reddit.com/by_id/' + postId + '.json');
-
         if (redditRes.statusCode != 200) {
             res.render('error', {
                 error: 'Reddit API returned code ' + redditRes.statusCode + '.'
@@ -114,17 +112,38 @@ function serveVideo(id, req, res) {
         let data = {};
 
         try {
-            data.sub = json.data.children[0].data.subreddit_name_prefixed;
-            data.title = json.data.children[0].data.title;
-            data.fallbackUrl = json.data.children[0].data.secure_media.reddit_video.fallback_url;
-            data.dashUrl = json.data.children[0].data.secure_media.reddit_video.dash_url;
-            data.postUrl = 'https://www.reddit.com/' + postId.split('_')[1];
+            let content = json.data.children[0].data;
+
+            data.sub = content.subreddit_name_prefixed;
+            data.title = content.title;
+            data.author = content.author;
+            data.postUrl = 'https://www.reddit.com/' + req.url;
+
+            // Not optimal, I'd guess videos still being processed by reddit might have 'self' too
+            if (content.thumbnail == null || content.thumbnail == 'self') {
+                res.render('error', { error: 'Content is neither a video nor an image.' });
+                return;
+            }
+
+            if (content.is_video) {
+                data.type = 'video';
+                data.fallbackUrl = content.secure_media.reddit_video.fallback_url;
+                data.dashUrl = content.secure_media.reddit_video.dash_url;
+            } else {
+                data.type = 'image';
+                data.imgUrl = content.url;
+            }
         }
         catch (e) {
             if (e.name != 'TypeError')
                 throw e;
 
             res.render('error', { error: 'Could not parse Reddit\'s API response.' });
+            return;
+        }
+
+        if (data.type == 'image') {
+            res.render('response', { data: data });
             return;
         }
 
@@ -153,7 +172,7 @@ function serveVideo(id, req, res) {
                     console.log('added', postId, 'into the cache');
             }
 
-            res.render('response', { data: data })
+            res.render('response', { data: data });
         });
     });
 };

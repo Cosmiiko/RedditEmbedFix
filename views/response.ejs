@@ -6,23 +6,29 @@
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
     <meta content="#FF4500" data-react-helmet="true" name="theme-color" />
 
-    <!--<meta name="twitter:card" content="player" />
-    <meta name="twitter:player" content="<%= data.vidUrl %>" />
-    <meta name="twitter:description" content="<%= data.title %>" />
-    <meta name="twitter:player:width" content="720" />
-    <meta name="twitter:player:height" content="480" />
-    <meta name="twitter:player:stream" content="<%= data.vidUrl %>" />
-    <meta name="twitter:player:stream:content_type" content="video/mp4" />-->
-
-    <meta property="og:type" content="video.movie">
-    <meta property="og:site_name" content="Reddit Embed Fix | redditfx.com">
-    <meta property="og:url" content="<%= data.postUrl %>" />
-    <meta property="og:video" content="<%= data.vidUrl %>" />
-    <meta property="og:video:secure_url" content="<%= data.vidUrl %>" />
-    <meta property="og:video:type" content="video/mp4" />
-    <meta property="og:video:width" content="1280" />
-    <meta property="og:video:height" content="720" />
+    <meta property="og:site_name" content="Reddit Embed Fix | redditfx.com" />
     <meta property="og:title" content="<%= data.sub %> - <%= data.title %>" />
+    <meta property="og:url" content="<%= data.postUrl %>" />
+    
+    <% if (data.type=='video' ) { %>
+        <meta property="og:type" content="video.movie" />
+        <meta property="og:video" content="<%= data.vidUrl %>" />
+        <meta property="og:video:secure_url" content="<%= data.vidUrl %>" />
+        <meta property="og:video:type" content="video/mp4" />
+        <meta property="og:video:width" content="1280" />
+        <meta property="og:video:height" content="720" />
+        <meta name="twitter:card" content="player" />
+        <meta name="twitter:player" content="<%= data.vidUrl %>" />
+        <meta name="twitter:player:width" content="1280" />
+        <meta name="twitter:player:height" content="720" />
+        <meta name="twitter:player:stream" content="<%= data.vidUrl %>" />
+        <meta name="twitter:player:stream:content_type" content="video/mp4" />
+    <% } else { %>
+        <meta property="og:type" content="article" />
+        <meta name="twitter:description" content="Posted by <%= data.author %>" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:image" content="<%= data.imgUrl %>" />
+    <% } %>
 
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css"
         integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk" crossorigin="anonymous">
@@ -36,12 +42,16 @@
 
 <body class="preload">
     <div class="centered">
-        <a href="<%= data.postUrl %>" class="button" id="redditBtn"><i class="fab fa-reddit-alien"></i>Original Reddit
-            post</a>
-        <a href="<%= data.vidUrl %>" class="button" id="miscBtn"><i class="far fa-file-video"></i>Direct link to
-            video</a>
-        <a href="https://github.com/Cosmiiko/RedditEmbedFix" class="button" id="miscBtn"><i
-                class="fab fa-github"></i>RedditFx's Github repo</a>
+        <a href="<%= data.postUrl %>" class="button" id="redditBtn"><i class="fab fa-reddit-alien"></i>Original Reddit post</a>
+
+        <% if (data.type == "video") { %>
+            <a href="<%= data.vidUrl %>" class="button" id="miscBtn"><i class="far fa-file-video"></i>Direct link to video</a>
+        <% } else { %>
+            <a href="<%= data.imgUrl %>" class="button" id="miscBtn"><i class="far fa-file-image"></i>Direct link to image</a>
+        <% } %>
+
+        <a href="https://github.com/Cosmiiko/RedditEmbedFix" class="button" id="miscBtn">
+            <i class="fab fa-github"></i>RedditFx's Github repo</a>
     </div>
 </body>
 
