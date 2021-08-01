@@ -114,6 +114,10 @@ function serveContent(id, req, res) {
         try {
             let content = json.data.children[0].data;
 
+            if (content.crosspost_parent_list && content.crosspost_parent_list.length > 0) {
+                content = content.crosspost_parent_list[0];
+            }
+
             data.sub = content.subreddit_name_prefixed;
             data.title = content.title;
             data.author = content.author;
